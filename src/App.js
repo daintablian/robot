@@ -1,26 +1,46 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const columns = 100;
+    const rows = 100;
+    return (
+        <div className="App">
+            <h2>Graph</h2>
+            <div className="graph">
+                {new Array(columns).fill(null).map((c, cI) => {
+                    return (
+                        <div key={cI} className="column">
+                            {new Array(rows).fill(null).map((r, rI) => {
+                                const newCI = cI - 50;
+                                const newRI = rI - 50;
+
+                                const sum = `${Math.abs(newCI)}${Math.abs(
+                                    newRI
+                                )}`
+                                    .split("")
+                                    .map(Number)
+                                    .map(Math.abs)
+                                    .reduce((a, b) => a + b);
+                                const isEmp = sum === 10;
+
+                                return (
+                                    <div
+                                        key={rI}
+                                        className={`square ${
+                                            isEmp ? "emp" : ""
+                                        }`}
+                                    >
+                                        {cI},{rI}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    );
+                })}
+            </div>
+        </div>
+    );
 }
 
 export default App;
