@@ -1,38 +1,73 @@
 import React from "react";
 import "./App.css";
-
+import {
+    format,
+    scanWithDepthFirstSearch,
+    isEmp,
+    calculatePerimiter,
+} from "./findParimter";
 function App() {
-    const columns = 100;
-    const rows = 100;
+    const graph = [];
+    const num = 80;
+    for (let columnIndex = -num; columnIndex < num; columnIndex++) {
+        const column = [];
+        graph.push(column);
+        for (let row = -num; row < num; row++) {
+            column.push([columnIndex, row]);
+        }
+    }
+
+    const empThreshold = 10;
+    const [visited, queue, iterations] = scanWithDepthFirstSearch(
+        empThreshold,
+        9000
+    );
+    const [perimeter, firstPerimeterCoordinate] = calculatePerimiter(
+        empThreshold
+    );
+
     return (
         <div className="App">
-            <h2>Graph</h2>
+            <div>
+                quick estimate of area:{" "}
+                {firstPerimeterCoordinate * firstPerimeterCoordinate}{" "}
+            </div>
+            <div>area using dfs: {Object.keys(visited).length}</div>
             <div className="graph">
-                {new Array(columns).fill(null).map((c, cI) => {
+                {graph.map((c, cI) => {
                     return (
                         <div key={cI} className="column">
-                            {new Array(rows).fill(null).map((r, rI) => {
-                                const newCI = cI - 50;
-                                const newRI = rI - 50;
+                            {c.map((point, rI) => {
+                                const nodeIsEmp = isEmp(point, empThreshold);
+                                const isPerimeter = perimeter[format(point)];
+                                const isVisited = visited[format(point)];
 
-                                const sum = `${Math.abs(newCI)}${Math.abs(
-                                    newRI
-                                )}`
-                                    .split("")
-                                    .map(Number)
-                                    .map(Math.abs)
-                                    .reduce((a, b) => a + b);
-                                const isEmp = sum === 10;
+                                let backgroundColor = "black";
+                                if (nodeIsEmp) {
+                                    backgroundColor = "black";
+                                }
+                                if (isPerimeter && nodeIsEmp) {
+                                    backgroundColor = "red";
+                                }
+                                if (isVisited) {
+                                    backgroundColor = "green";
+                                }
 
+                                const diameter = "10px";
                                 return (
                                     <div
                                         key={rI}
-                                        className={`square ${
-                                            isEmp ? "emp" : ""
-                                        }`}
-                                    >
-                                        {cI},{rI}
-                                    </div>
+                                        style={{
+                                            height: diameter,
+                                            width: diameter,
+                                            fontSize: "7px",
+                                            overflow: "hidden",
+                                            boxSizing: "border-box",
+                                            border: "1px solid black",
+                                            backgroundColor,
+                                        }}
+                                        data-test={format(point)}
+                                    ></div>
                                 );
                             })}
                         </div>
