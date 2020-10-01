@@ -5,32 +5,31 @@ import {
     scanWithDepthFirstSearch,
     isEmp,
     calculatePerimiter,
-} from "./findParimter";
-function App() {
-    const graph = [];
-    const num = 80;
-    for (let columnIndex = -num; columnIndex < num; columnIndex++) {
-        const column = [];
-        graph.push(column);
-        for (let row = -num; row < num; row++) {
-            column.push([columnIndex, row]);
-        }
-    }
+    getAreaFromFirstX,
+} from "./utils";
 
-    const empThreshold = 10;
-    const [visited, queue, iterations] = scanWithDepthFirstSearch(
-        empThreshold,
-        9000
-    );
+function App() {
+    const empThreshold = 23;
+    const [visited] = scanWithDepthFirstSearch(empThreshold, Infinity);
     const [perimeter, firstPerimeterCoordinate] = calculatePerimiter(
         empThreshold
     );
 
+    const graph = [];
+    // const num = firstPerimeterCoordinate + 1;
+    // for (let columnIndex = -num; columnIndex < num; columnIndex++) {
+    //     const column = [];
+    //     graph.push(column);
+    //     for (let row = -num; row < num; row++) {
+    //         column.push([columnIndex, row]);
+    //     }
+    // }
     return (
         <div className="App">
+            <div>emp threshold:{empThreshold}</div>
             <div>
                 quick estimate of area:{" "}
-                {firstPerimeterCoordinate * firstPerimeterCoordinate}{" "}
+                {getAreaFromFirstX(firstPerimeterCoordinate)}
             </div>
             <div>area using dfs: {Object.keys(visited).length}</div>
             <div className="graph">
@@ -53,7 +52,7 @@ function App() {
                                     backgroundColor = "green";
                                 }
 
-                                const diameter = "10px";
+                                const diameter = "7px";
                                 return (
                                     <div
                                         key={rI}

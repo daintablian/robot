@@ -15,7 +15,10 @@ export const isEmp = ([x, y], target) =>
         .split("")
         .reduce((a, b) => Number(a) + Number(b)) > target;
 
-export function scanWithDepthFirstSearch(empThreshold, maxIterations = 1000) {
+export function scanWithDepthFirstSearch(
+    empThreshold,
+    maxIterations = Infinity
+) {
     const visited = {};
     const queue = [[0, 0]];
     let iterations = 0;
@@ -32,7 +35,12 @@ export function scanWithDepthFirstSearch(empThreshold, maxIterations = 1000) {
             });
         }
     }
-    return [visited, queue, iterations];
+    return [
+        visited,
+        // used for testing
+        queue,
+        iterations,
+    ];
 }
 
 const findFirstCoordinate = (empThreshold, base = 10) => {
@@ -62,3 +70,5 @@ export function calculatePerimiter(empThreshold) {
     }
     return [perimeter, x];
 }
+
+export const getAreaFromFirstX = (firstX) => Math.pow(firstX * 2, 2);
