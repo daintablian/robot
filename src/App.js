@@ -9,21 +9,21 @@ import {
 } from "./utils";
 
 function App() {
-    const empThreshold = 23;
+    const empThreshold = 11;
     const [visited] = scanWithDepthFirstSearch(empThreshold, Infinity);
     const [perimeter, firstPerimeterCoordinate] = calculatePerimiter(
         empThreshold
     );
 
     const graph = [];
-    // const num = firstPerimeterCoordinate + 1;
-    // for (let columnIndex = -num; columnIndex < num; columnIndex++) {
-    //     const column = [];
-    //     graph.push(column);
-    //     for (let row = -num; row < num; row++) {
-    //         column.push([columnIndex, row]);
-    //     }
-    // }
+    const num = firstPerimeterCoordinate + 1;
+    for (let columnIndex = -num; columnIndex < num; columnIndex++) {
+        const column = [];
+        graph.push(column);
+        for (let row = -num; row < num; row++) {
+            column.push([columnIndex, row]);
+        }
+    }
     return (
         <div className="App">
             <div>emp threshold:{empThreshold}</div>
